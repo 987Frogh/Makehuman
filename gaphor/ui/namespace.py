@@ -7,6 +7,8 @@ a result only classifiers are shown here.
 import logging
 
 from gi.repository import GObject, Gio, Gdk, Gtk
+import re
+from functools import singledispatch
 
 from gaphor import UML
 from gaphor.UML.event import (
@@ -21,10 +23,13 @@ from gaphor.core import _, event_handler, action, transactional
 from gaphor.ui.actiongroup import create_action_group
 from gaphor.ui.event import DiagramOpened
 from gaphor.ui.abc import UIComponent
-from gaphor.ui.iconname import get_icon_name
 
-# The following items will be shown in the treeview, although they
-# are UML.Namespace elements.
+
+log = logging.getLogger(__name__)
+
+
+# The following items will be shown in the treeview,
+# although they are UML.Namespace elements.
 _default_filter_list = (
     UML.Class,
     UML.Interface,
@@ -44,7 +49,37 @@ _default_filter_list = (
 )
 
 
-log = logging.getLogger(__name__)
+TO_KEBAB = re.compile(r"([a-z])([A-Z]+)")
+
+
+def to_kebab_case(s):
+    return TO_KEBAB.sub("\\1-\\2", s).lower()
+
+
+@singledispatch
+def get_icon_name(element):
+    """
+    Get an icon name for a UML model element.
+    """
+    return f"gaphor-{to_kebab_case(element.__class__.__name__)}-symbolic"
+
+
+@get_icon_name.register(UML.Class)
+def get_name_for_class(element):
+    if isinstance(element, UML.Stereotype):
+        return "gaphor-stereotype-symbolic"
+    elif element.extension:
+        return "gaphor-metaclass-symbolic"
+    else:
+        return "gaphor-class-symbolic"
+
+
+@get_icon_name.register(UML.Property)
+def get_name_for_property(element):
+    if element.association:
+        return "gaphor-association-symbolic"
+    else:
+        return "gaphor-property-symbolic"
 
 
 class NamespaceView(Gtk.TreeView):

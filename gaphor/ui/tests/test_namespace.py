@@ -1,6 +1,6 @@
 import pytest
 import gaphor.UML as UML
-from gaphor.ui.namespace import Namespace
+from gaphor.ui.namespace import Namespace, to_kebab_case
 import gaphor.services.eventmanager
 import gaphor.services.componentregistry
 
@@ -136,3 +136,9 @@ def test_element_factory_flush(namespace, element_factory):
     element_factory.flush()
 
     assert namespace.model.get_iter_first() is None
+
+
+def test_kebab_case():
+    assert to_kebab_case("Class") == "class"
+    assert to_kebab_case("FooBar") == "foo-bar"
+    assert to_kebab_case("FooBarBaz") == "foo-bar-baz"
