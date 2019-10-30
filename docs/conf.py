@@ -22,7 +22,7 @@ from recommonmark.transform import AutoStructify
 
 # -- Project information -----------------------------------------------------
 
-project = "Gaphor"
+project = "Gaphor developer site"
 copyright = "2019, Arjan J. Molenaar"
 author = "Arjan J. Molenaar"
 
@@ -139,7 +139,13 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "Gaphor.tex", "Gaphor Documentation", "Arjan J. Molenaar", "manual")
+    (
+        master_doc,
+        "Gaphor.tex",
+        "Gaphor Developer Documentation",
+        "Arjan J. Molenaar",
+        "manual",
+    )
 ]
 
 
@@ -147,7 +153,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "gaphor", "Gaphor Documentation", [author], 1)]
+man_pages = [(master_doc, "gaphor", "Gaphor Developer Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------------
@@ -159,7 +165,7 @@ texinfo_documents = [
     (
         master_doc,
         "Gaphor",
-        "Gaphor Documentation",
+        "Gaphor Developer Documentation",
         author,
         "Gaphor",
         "One line description of project.",
